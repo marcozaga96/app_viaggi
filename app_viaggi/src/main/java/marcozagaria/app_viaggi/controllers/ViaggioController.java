@@ -29,7 +29,7 @@ public class ViaggioController {
     }
 
     @GetMapping("/{Id}")
-    public Viaggio createViaggioId(@PathVariable UUID Id) {
+    public Viaggio cercaViaggioId(@PathVariable UUID Id) {
         return viaggioService.cercaId(Id);
     }
 

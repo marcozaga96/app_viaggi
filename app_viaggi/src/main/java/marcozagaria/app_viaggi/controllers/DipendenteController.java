@@ -27,8 +27,8 @@ public class DipendenteController {
     private DipendenteService dipendenteService;
 
     @GetMapping
-    public Page<Dipendente> getAutori(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size,
-                                      @RequestParam(defaultValue = "id") String sortBy) {
+    public Page<Dipendente> getDipendente(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size,
+                                          @RequestParam(defaultValue = "id") String sortBy) {
         // Mettiamo dei valori di default per far si che non ci siano errori se il client non ci invia uno dei query parameters
         return dipendenteService.getAllDipendenteList(page, size, sortBy);
     }
@@ -40,7 +40,7 @@ public class DipendenteController {
     }
 
     @GetMapping("/{Id}")
-    public Dipendente createDipendenteId(@PathVariable UUID Id) {
+    public Dipendente cercaDipendenteId(@PathVariable UUID Id) {
         return dipendenteService.cercaId(Id);
     }
 

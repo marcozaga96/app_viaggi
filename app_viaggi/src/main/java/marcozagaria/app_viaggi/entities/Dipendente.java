@@ -19,15 +19,15 @@ public class Dipendente {
     @GeneratedValue()
     @Setter(AccessLevel.NONE)
     private UUID id;
-    private String username;
     private String nome;
     private String cognome;
     private String email;
+    private String username;
 
-    public Dipendente(String username, String nome, String cognome, String email) {
-        this.username = username;
+    public Dipendente(String nome, String cognome, String email, String username) {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
+        this.username = username;
     }
 }
