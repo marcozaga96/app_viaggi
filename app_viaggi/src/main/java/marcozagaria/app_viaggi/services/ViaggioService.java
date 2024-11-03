@@ -41,8 +41,6 @@ public class ViaggioService {
 
     public Viaggio cercaViaggioEModifica(UUID id, ViaggioDTO body) {
         Viaggio cerca = cercaId(id);
-        cerca.setDestinazione(body.destinazione());
-        cerca.setData(body.data());
         cerca.setStato(body.stato());
         if (cerca == null) throw new NotFoundException(id);
         return viaggioRepository.save(cerca);
