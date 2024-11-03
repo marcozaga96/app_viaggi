@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -53,5 +54,12 @@ public class DipendenteController {
     @ResponseStatus(HttpStatus.NO_CONTENT) // 204
     public void cercaECancella(@PathVariable UUID Id) {
         dipendenteService.cercaDipendenteECancella(Id);
+    }
+
+    @PatchMapping("/{Id}/avatar")
+    public String uploadAvatar(@RequestParam("avatar") MultipartFile file, @PathVariable UUID Id) {
+        // "avatar" deve corrispondere ESATTAMENTE al campo del FormData che ci invia il Frontend
+        // Se non corrisponde, non troverò il file
+        return dipendenteService.uploadAvatar(file, Id);
     }
 }

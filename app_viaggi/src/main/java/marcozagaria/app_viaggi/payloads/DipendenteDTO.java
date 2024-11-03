@@ -15,5 +15,6 @@ public record DipendenteDTO(@NotEmpty(message = "Il nome proprio è obbligatorio
                             String email,
                             @NotEmpty(message = "L' username proprio è obbligatorio!")
                             @Size(min = 2, max = 40, message = "L' username deve essere compreso tra 2 e 40 caratteri!")
-                            String username) {
+                            String username
+) {
 }

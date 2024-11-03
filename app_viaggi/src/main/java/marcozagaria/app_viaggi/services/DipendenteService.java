@@ -1,6 +1,9 @@
 package marcozagaria.app_viaggi.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import marcozagaria.app_viaggi.entities.Dipendente;
+import marcozagaria.app_viaggi.exeption.BadRequestException;
 import marcozagaria.app_viaggi.exeption.NotFoundException;
 import marcozagaria.app_viaggi.payloads.DipendenteDTO;
 import marcozagaria.app_viaggi.repositories.DipendenteRepository;
@@ -10,7 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
 
@@ -18,6 +23,9 @@ import java.util.UUID;
 public class DipendenteService {
     @Autowired
     private DipendenteRepository dipendenteRepository;
+
+    @Autowired
+    private Cloudinary cloudinaryUploader;
 
     public Page<Dipendente> getAllDipendenteList(int page, int size, String sortBy) {
         if (size > 100) size = 100;
@@ -27,6 +35,7 @@ public class DipendenteService {
 
     public Dipendente saveDipendente(DipendenteDTO body) {
         Dipendente newDipendente = new Dipendente(body.nome(), body.cognome(), body.email(), body.username());
+        newDipendente.setAvatar("https://ui-avatars.com/api/?name=" + body.nome() + "+" + body.cognome());
         return dipendenteRepository.save(newDipendente);
     }
 
@@ -50,5 +59,20 @@ public class DipendenteService {
         Dipendente cerca = cercaId(id);
         if (cerca == null) throw new NotFoundException(id);
         dipendenteRepository.delete(cerca);
+    }
+
+    public String uploadAvatar(MultipartFile file, UUID id) {
+        String url = null;
+        Dipendente cerca = cercaId(id);
+        try {
+            url = (String) cloudinaryUploader.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
+            cerca.setAvatar(url);
+            dipendenteRepository.save(cerca);
+        } catch (IOException e) {
+            throw new BadRequestException("Ci sono stati problemi con l'upload del file!");
+        }
+        // ... qua poi dovrei prendere l'url e salvarlo nel rispettivo utente
+
+        return url;
     }
 }
