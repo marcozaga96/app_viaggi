@@ -50,6 +50,10 @@ public class PrenotazioneService {
         if (!prenotazioniDipendentePerData.isEmpty()) {
             throw new RuntimeException("L'utente ha già una prenotazione per questa data.");
         }
+        Optional<Prenotazione> prenotazioniDipendente = prenotazioneRepository.findByDipendenteIdAndViaggioId(body.dipendente_id(), body.viaggio_id());
+        if (!prenotazioniDipendente.isEmpty()) {
+            throw new RuntimeException("L'utente ha già una prenotazione.");
+        }
 
         Prenotazione newPrenotazione = new Prenotazione(body.note(), body.data_di_richiesta());
         newPrenotazione.setViaggio(viaggio1);

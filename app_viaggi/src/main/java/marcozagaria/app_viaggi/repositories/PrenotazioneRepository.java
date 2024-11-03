@@ -11,4 +11,6 @@ import java.util.UUID;
 @Repository
 public interface PrenotazioneRepository extends JpaRepository<Prenotazione, UUID> {
     Optional<Prenotazione> findByDipendenteIdAndDataDiRichiesta(UUID utenteId, LocalDate data);
+
+    Optional<Prenotazione> findByDipendenteIdAndViaggioId(UUID utenteId, UUID viaggioId);
 }
