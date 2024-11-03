@@ -46,6 +46,11 @@ public class PrenotazioneService {
         }
         Dipendente dipendente1 = dipendente.get();
 
+        Optional<Prenotazione> prenotazioniDipendentePerData = prenotazioneRepository.findByDipendenteIdAndDataDiRichiesta(body.dipendente_id(), body.data_di_richiesta());
+        if (!prenotazioniDipendentePerData.isEmpty()) {
+            throw new RuntimeException("L'utente ha già una prenotazione per questa data.");
+        }
+
         Prenotazione newPrenotazione = new Prenotazione(body.note(), body.data_di_richiesta());
         newPrenotazione.setViaggio(viaggio1);
         newPrenotazione.setDipendente(dipendente1);
@@ -62,7 +67,6 @@ public class PrenotazioneService {
         Prenotazione cerca = cercaId(id);
         cerca.setNote(body.note());
         cerca.setDataDiRichiesta(body.data_di_richiesta());
-// --------------------------aggiungere cerca dipendente e viaggio globali e importarli per il set--------------------------
         if (cerca == null) throw new NotFoundException(id);
         return prenotazioneRepository.save(cerca);
     }
